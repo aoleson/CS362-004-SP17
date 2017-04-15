@@ -659,7 +659,8 @@ int adventurer_card(struct gameState *state) {
      drawCard(currentPlayer, state);
      cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
      if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
-       drawntreasure++;
+       //drawntreasure++;
+       drawntreasure += 2; 		//BUG: increments by 2, not by 1.
      else{
        temphand[z]=cardDrawn;
        state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
@@ -681,7 +682,8 @@ int smithy_card (int handPos, struct gameState *state) {
    int currentPlayer = whoseTurn(state);
 
       //+3 Cards
-   for (i = 0; i < 3; i++)
+   //for (i = 0; i < 3; i++)
+   for (i = 0; i < 5; i++) 		//BUG: Lets you draw five cards instead of three.
      {
        drawCard(currentPlayer, state);
      }
@@ -705,7 +707,7 @@ int council_room_card(int handPos, struct gameState *state) {
      }
 		     
    //+1 Buy
-   state->numBuys++;
+   //state->numBuys++;			//BUG: Does not add another buy.
 		     
    //Each other player draws a card
    for (i = 0; i < state->numPlayers; i++)
@@ -731,7 +733,7 @@ int great_hall_card(int handPos, struct gameState *state) {
    drawCard(currentPlayer, state);
 		     
    //+1 Actions
-   state->numActions++;
+   //state->numActions++;			//BUG: Does not add another action.
 		     
    //discard card from hand
    discardCard(handPos, currentPlayer, state, 0);
