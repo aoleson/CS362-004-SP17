@@ -692,6 +692,7 @@ int smithy_card (int handPos, struct gameState *state) {
 
 }
 
+//Added for Assignment 2: refactor
 int council_room_card(int handPos, struct gameState *state) {
 
    int i;
@@ -719,6 +720,23 @@ int council_room_card(int handPos, struct gameState *state) {
    discardCard(handPos, currentPlayer, state, 0);
 		     
    return 0;
+}
+
+//Added for assignment 2: Refactor
+int great_hall_card(int handPos, struct gameState *state) {
+
+   int currentPlayer = whoseTurn(state);
+
+   //+1 Card
+   drawCard(currentPlayer, state);
+		     
+   //+1 Actions
+   state->numActions++;
+		     
+   //discard card from hand
+   discardCard(handPos, currentPlayer, state, 0);
+   return 0;
+
 }
 
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
@@ -933,15 +951,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case great_hall:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+1 Actions
-      state->numActions++;
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+      return great_hall_card(handPos, state);
 		
     case minion:
       //+1 action
