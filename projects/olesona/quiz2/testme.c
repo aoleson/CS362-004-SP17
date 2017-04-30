@@ -6,13 +6,25 @@
 char inputChar()
 {
     // TODO: rewrite this function
-    return ' ';
+   char rChar = (rand() % 96) + 32;	//96 = 127 + 1 - 32, so it gives us the range for ascii characters we care about
+   return rChar;
 }
 
 char *inputString()
 {
     // TODO: rewrite this function
-    return "";
+    
+   char * rString;
+   int i = 0;
+   int rStringSize = 5;
+
+   rString = (char *) malloc (rStringSize);
+
+   for (i = 0; i < rStringSize; i++) {
+      rString[i] = (rand() % 26) + 97;	//26 = 122 + 1 - 97, Gives us a random lowercase char
+   }
+
+   return rString;
 }
 
 void testme()
@@ -31,7 +43,7 @@ void testme()
     if (c == '[' && state == 0) state = 1;
     if (c == '(' && state == 1) state = 2;
     if (c == '{' && state == 2) state = 3;
-    if (c == ' '&& state == 3) state = 4;
+    if (c == ' ' && state == 3) state = 4;
     if (c == 'a' && state == 4) state = 5;
     if (c == 'x' && state == 5) state = 6;
     if (c == '}' && state == 6) state = 7;
