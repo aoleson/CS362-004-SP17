@@ -120,7 +120,7 @@ int main () {
 
       printf("Testing Adventurer card...\n");
 
-      if (afterCoins > (beforeCoins + 2)) {
+      if (afterCoins != (beforeCoins + 2)) {
 	 printf("\tCards drawn - FAIL\n");
 	 testDraw++;
 	 passedAllTestsFlag = 0;
@@ -128,7 +128,6 @@ int main () {
       else {
 	 printf("\tCards drawn - PASS\n");
       }
-
       
       if (afterCoins < beforeCoins) {
 	 printf("\tCards count - FAIL\n");
