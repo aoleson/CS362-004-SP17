@@ -733,7 +733,7 @@ int great_hall_card(int handPos, struct gameState *state) {
    drawCard(currentPlayer, state);
 		     
    //+1 Actions
-   //state->numActions++;			//BUG: Does not add another action.
+   state->numActions++;			//BUG: Does not add another action. (Removed for A4 to show that my tests work)
 		     
    //discard card from hand
    discardCard(handPos, currentPlayer, state, 0);
