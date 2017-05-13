@@ -1,0 +1,151 @@
+        -:    0:Source:randomtestcard1.c
+        -:    0:Graph:randomtestcard1.gcno
+        -:    0:Data:randomtestcard1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* **********************************************
+        -:    2: * File: randomtestcard1.c
+        -:    3: * Author: Alannah Oleson
+        -:    4: * CS 362, Assignment 4
+        -:    5: * Description: A random test generator for the smithy card.
+        -:    6: * *********************************************/
+        -:    7:
+        -:    8:#include "dominion.h"
+        -:    9:#include "dominion_helpers.h"
+        -:   10:#include "rngs.h"
+        -:   11:
+        -:   12:#include <stdio.h>
+        -:   13:#include <stdlib.h>
+        -:   14:#include <string.h>
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:
+        -:   18:
+function main called 1 returned 100% blocks executed 91%
+        1:   19:int main () {
+        -:   20:
+        -:   21:   struct gameState g;
+        -:   22:
+        1:   23:   int seed = 1000;
+        1:   24:   int numTestsPassed = 0, passedAllTestsFlag = 0;
+        1:   25:   int numPlayers = 2, currPlayer = 0;
+        -:   26:   int deckSize, handSize, startDeck, currDeck, startHand, currHand, startDiscard, currDiscard;
+        1:   27:   int failedDeckCount = 0, failedHandCount = 0, failedDiscardCount = 0;
+        1:   28:   int i = 0;
+        1:   29:   int choice1 = 0, choice2 = 0, choice3 = 0, handPos = 0, bonus = 0;
+        -:   30:
+        1:   31:   int allowedCards[10] = {adventurer, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy, council_room};
+        -:   32:
+        1:   33:   srand(time(NULL));
+call    0 returned 100%
+call    1 returned 100%
+        -:   34:
+        -:   35:
+   123457:   36:   for (i = 0; i < 123456; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:   37:
+        -:   38:      //Randomly intialize the game state. Then make sure the needed variables are sane.
+   123456:   39:      initializeGame(numPlayers, allowedCards, seed, &g);
+call    0 returned 100%
+        -:   40:
+   123456:   41:      deckSize = rand() % (MAX_DECK + 1);
+call    0 returned 100%
+   123456:   42:      handSize = rand() % (deckSize + 1);
+call    0 returned 100%
+        -:   43:
+   123456:   44:      g.deckCount[0] = deckSize - handSize;
+   123456:   45:      g.handCount[0] = handSize;
+   123456:   46:      handPos = g.hand[currPlayer][g.handCount[currPlayer]-1];
+        -:   47:
+        -:   48:
+        -:   49:      //Note the current state before playing the card
+   123456:   50:      startDeck = g.deckCount[0];
+   123456:   51:      startHand = g.handCount[0];
+   123456:   52:      startDiscard = g.playedCardCount;
+        -:   53:
+        -:   54:
+        -:   55:      //Play the card
+   123456:   56:      cardEffect(smithy, choice1, choice2, choice3, &g, handPos, &bonus);
+call    0 returned 100%
+        -:   57:
+        -:   58:
+        -:   59:      //Note the state after playing the card
+   123456:   60:      currDeck = g.deckCount[0];
+   123456:   61:      currHand = g.handCount[0];
+   123456:   62:      currDiscard = g.playedCardCount;
+        -:   63:
+        -:   64:
+        -:   65:      //NOW... the moment of reckoning... the tests
+   123456:   66:      passedAllTestsFlag = 1;
+        -:   67:
+   123456:   68:      printf("Testing Smithy card...\n");
+call    0 returned 100%
+        -:   69:
+   123456:   70:      if (currDeck != (startDeck - 3)) {
+branch  0 taken 99% (fallthrough)
+branch  1 taken 1%
+   122143:   71:	 printf("\tDeck count - FAIL\n");
+call    0 returned 100%
+   122143:   72:	 failedDeckCount++;
+   122143:   73:	 passedAllTestsFlag = 0;
+        -:   74:      }
+        -:   75:      else {
+     1313:   76:	 printf("\tDeck count - PASS\n");
+call    0 returned 100%
+        -:   77:      }
+        -:   78:
+   123456:   79:      if (currHand != (startHand + 2)) {
+branch  0 taken 99% (fallthrough)
+branch  1 taken 1%
+   122255:   80:	 printf("\tCards drawn - FAIL\n");
+call    0 returned 100%
+   122255:   81:	 failedHandCount++;
+   122255:   82:	 passedAllTestsFlag = 0;
+        -:   83:      }
+        -:   84:      else {
+     1201:   85:	 printf("\tCards drawn - PASS\n");
+call    0 returned 100%
+        -:   86:      }
+        -:   87:
+   123456:   88:      if (currDiscard != (startDiscard + 1)) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+   123456:   89:	 printf("\tCards discarded - FAIL\n");
+call    0 returned 100%
+   123456:   90:	 failedDiscardCount++;
+   123456:   91:	 passedAllTestsFlag = 0;
+        -:   92:      }
+        -:   93:      else {
+    #####:   94:	 printf("\tCards discarded - PASS\n");
+call    0 never executed
+        -:   95:      }
+        -:   96:
+        -:   97:
+   123456:   98:      if (passedAllTestsFlag == 1) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   99:	 printf("All tests passed!!\n");
+call    0 never executed
+    #####:  100:	 numTestsPassed++;
+        -:  101:      }
+        -:  102:
+        -:  103:   }
+        -:  104:
+        -:  105:      
+        1:  106:   printf("Smithy tests summary:\n");
+call    0 returned 100%
+        1:  107:   printf("\tPASSED: %d\n", numTestsPassed);
+call    0 returned 100%
+        1:  108:   printf("\tFAILED (deck): %d\n", failedDeckCount);
+call    0 returned 100%
+        1:  109:   printf("\tFAILED (hand): %d\n", failedHandCount);
+call    0 returned 100%
+        1:  110:   printf("\tFAILED (discard): %d\n\n", failedDiscardCount);
+call    0 returned 100%
+        -:  111:
+        -:  112:   
+        -:  113:
+        1:  114:   return 0;
+        -:  115:
+        -:  116:}

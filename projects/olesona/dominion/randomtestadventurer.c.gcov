@@ -1,0 +1,264 @@
+        -:    0:Source:randomtestadventurer.c
+        -:    0:Graph:randomtestadventurer.gcno
+        -:    0:Data:randomtestadventurer.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* **********************************************
+        -:    2: * File: randomtestadventurer.c
+        -:    3: * Author: Alannah Oleson
+        -:    4: * CS 362, Assignment 4
+        -:    5: * Description: A random test generator for the adventurer card.
+        -:    6: * *********************************************/
+        -:    7:
+        -:    8:#include "dominion.h"
+        -:    9:#include "dominion_helpers.h"
+        -:   10:#include "rngs.h"
+        -:   11:
+        -:   12:#include <stdio.h>
+        -:   13:#include <stdlib.h>
+        -:   14:#include <string.h>
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:
+        -:   18:
+function main called 1 returned 100% blocks executed 82%
+        1:   19:int main () {
+        -:   20:
+        -:   21:   struct gameState g;
+        -:   22:
+        1:   23:   int seed = 1000;
+        1:   24:   int numTestsPassed = 0, passedAllTestsFlag = 0, testDraw = 0, failedDiscard = 0;
+        1:   25:   int numPlayers = 2, currPlayer = 0, deckSize, handSize, randCard, randAllowedCard;
+        -:   26:   int trCopper, trSilver, trGold;
+        1:   27:   int beforeCoins = 0, afterCoins = 0;
+        -:   28:   int i, j, k;
+        1:   29:   int choice1 = 0, choice2 = 0, choice3 = 0, handPos = 0, bonus = 0;
+        -:   30:
+        1:   31:   int allowedCards[10] = {adventurer, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy, council_room};
+        -:   32:
+        1:   33:   srand(time(NULL));
+call    0 returned 100%
+call    1 returned 100%
+        -:   34:
+        -:   35:
+   123457:   36:   for (i = 0; i < 123456; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:   37:
+        -:   38:      //Randomly intialize the game state. Then make sure the needed variables are sane.
+   123456:   39:      initializeGame(numPlayers, allowedCards, seed, &g);
+call    0 returned 100%
+   123456:   40:      beforeCoins = 0;
+   123456:   41:      afterCoins = 0;
+        -:   42:
+   123456:   43:      deckSize = rand() % (MAX_DECK + 1);
+call    0 returned 100%
+   123456:   44:      handSize = rand() % (deckSize + 1);
+call    0 returned 100%
+        -:   45:
+   123456:   46:      g.deckCount[0] = deckSize - handSize;
+   123456:   47:      g.handCount[0] = handSize;
+        -:   48:
+        -:   49:
+        -:   50:
+        -:   51:      //Fill up each player's deck with random cards
+   370368:   52:      for (j = 0; j < numPlayers; j++) {
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+        -:   53:
+ 16877148:   54:	 for (k = 0; k < g.deckCount[j]; k++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:   55:
+ 16630236:   56:	    randCard = rand() % 51;	//# of diff cards possible + 1
+call    0 returned 100%
+        -:   57:
+ 16630236:   58:	    if (randCard == 1) {
+branch  0 taken 2% (fallthrough)
+branch  1 taken 98%
+   326685:   59:	       g.deck[j][k] = copper;
+        -:   60:	    }
+ 16303551:   61:	    else if (randCard == 2) {
+branch  0 taken 2% (fallthrough)
+branch  1 taken 98%
+   325623:   62:	       g.deck[j][k] = silver;
+        -:   63:	    }
+ 15977928:   64:	    else if (randCard == 3) {
+branch  0 taken 2% (fallthrough)
+branch  1 taken 98%
+   324580:   65:	       g.deck[j][k] = gold;
+        -:   66:	    }
+        -:   67:	    else {
+ 15653348:   68:	       randAllowedCard = rand() % 10;
+call    0 returned 100%
+ 15653348:   69:	       g.deck[j][k] = allowedCards[randAllowedCard];
+        -:   70:	    }
+        -:   71:
+        -:   72:	 }
+        -:   73:
+        -:   74:      }
+        -:   75:
+        -:   76:
+        -:   77:      //Note the current state of the player's treasure
+ 15640554:   78:      for (j = 0; j < g.handCount[currPlayer]; j++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+ 15517098:   79:	 if (g.hand[currPlayer][j] == copper || g.hand[currPlayer][j] == silver || g.hand[currPlayer][j] == gold) {
+branch  0 taken 69% (fallthrough)
+branch  1 taken 31%
+branch  2 taken 58% (fallthrough)
+branch  3 taken 42%
+branch  4 taken 71% (fallthrough)
+branch  5 taken 29%
+ 13723364:   80:	    beforeCoins += 1;
+        -:   81:	 }
+        -:   82:      }
+        -:   83:
+        -:   84:
+        -:   85:      //Play the card
+   123456:   86:      cardEffect(adventurer, choice1, choice2, choice3, &g, handPos, &bonus);
+call    0 returned 100%
+        -:   87:
+        -:   88:
+        -:   89:      //Note the state of the player's treasure now
+ 15743945:   90:      for (j = 0; j < g.handCount[currPlayer]; j++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+ 15620489:   91:	 if (g.hand[currPlayer][j] == copper || g.hand[currPlayer][j] == silver || g.hand[currPlayer][j] == gold) {
+branch  0 taken 69% (fallthrough)
+branch  1 taken 31%
+branch  2 taken 58% (fallthrough)
+branch  3 taken 42%
+branch  4 taken 71% (fallthrough)
+branch  5 taken 29%
+ 13829990:   92:	    afterCoins += 1;
+        -:   93:	 }
+        -:   94:      }
+        -:   95:
+        -:   96:
+   123456:   97:      trCopper = 0;
+   123456:   98:      trSilver = 0;
+   123456:   99:      trGold = 0;
+        -:  100:
+        -:  101:
+        -:  102:      //Note the discard pile state
+  1837751:  103:      for (j = 0; j < g.discardCount[currPlayer]; j++) {
+branch  0 taken 93%
+branch  1 taken 7% (fallthrough)
+        -:  104:
+  1714295:  105:	 if (g.discard[currPlayer][j] == copper) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  106:	    trCopper += 1;
+        -:  107:	 }
+  1714295:  108:	 else if (g.discard[currPlayer][j] == silver) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  109:	    trSilver += 1;
+        -:  110:	 }
+  1714295:  111:	 else if (g.discard[currPlayer][j] == gold) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  112:	    trGold += 1;
+        -:  113:	 }
+        -:  114:
+        -:  115:      }
+        -:  116:
+        -:  117:
+        -:  118:      //NOW... the moment of reckoning... the tests
+   123456:  119:      passedAllTestsFlag = 1;
+        -:  120:
+   123456:  121:      printf("Testing Adventurer card...\n");
+call    0 returned 100%
+        -:  122:
+   123456:  123:      if (afterCoins != (beforeCoins + 2)) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+   123456:  124:	 printf("\tCards drawn - FAIL\n");
+call    0 returned 100%
+   123456:  125:	 testDraw++;
+   123456:  126:	 passedAllTestsFlag = 0;
+        -:  127:      }
+        -:  128:      else {
+    #####:  129:	 printf("\tCards drawn - PASS\n");
+call    0 never executed
+        -:  130:      }
+        -:  131:      
+   123456:  132:      if (afterCoins < beforeCoins) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  133:	 printf("\tCards count - FAIL\n");
+call    0 never executed
+    #####:  134:	 testDraw++;
+    #####:  135:	 passedAllTestsFlag = 0;
+        -:  136:      }
+        -:  137:      else {
+   123456:  138:	 printf("\tCards count - PASS\n");
+call    0 returned 100%
+        -:  139:      }
+        -:  140:
+        -:  141:
+   123456:  142:      if (trGold != 0) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  143:	 printf("\tGold - FAIL\n");
+call    0 never executed
+    #####:  144:	 failedDiscard++;
+    #####:  145:	 passedAllTestsFlag = 0;
+        -:  146:      }
+        -:  147:      else {
+   123456:  148:	 printf("\tGold - PASS\n");
+call    0 returned 100%
+        -:  149:      }
+        -:  150:
+   123456:  151:      if (trSilver != 0) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  152:	 printf("\tSilver - FAIL\n");
+call    0 never executed
+    #####:  153:	 failedDiscard++;
+    #####:  154:	 passedAllTestsFlag = 0;
+        -:  155:      }
+        -:  156:      else {
+   123456:  157:	 printf("\tSilver - PASS\n");
+call    0 returned 100%
+        -:  158:      }
+        -:  159:
+   123456:  160:      if (trCopper != 0) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  161:	 printf("\tCopper - FAIL\n");
+call    0 never executed
+    #####:  162:	 failedDiscard++;
+    #####:  163:	 passedAllTestsFlag = 0;
+        -:  164:      }
+        -:  165:      else {
+   123456:  166:	 printf("\tCopper - PASS\n");
+call    0 returned 100%
+        -:  167:      }
+        -:  168:
+        -:  169:
+   123456:  170:      if (passedAllTestsFlag == 1) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  171:	 printf("All tests passed!!\n\n");
+call    0 never executed
+    #####:  172:	 numTestsPassed++;
+        -:  173:      }
+        -:  174:
+        -:  175:   }
+        -:  176:
+        1:  177:   printf("Adventurer tests summary:\n");
+call    0 returned 100%
+        1:  178:   printf("\tPASSED: %d\n", numTestsPassed);
+call    0 returned 100%
+        1:  179:   printf("\tFAILED (draw): %d\n", testDraw);
+call    0 returned 100%
+        1:  180:   printf("\tFAILED (discard): %d\n\n", failedDiscard);
+call    0 returned 100%
+        -:  181:
+        -:  182:   
+        -:  183:
+        1:  184:   return 0;
+        -:  185:
+        -:  186:}
