@@ -59,6 +59,9 @@ int main () {
       //Note the state after playing the card
       currHand = g.handCount[0];
       currNumActions = g.numActions;
+      if (rand() % 100 == 1) {	//Test for an intentionally bad condition
+	 currNumActions += 1;
+      }
 
 
       //NOW... the moment of reckoning... the tests

@@ -68,16 +68,19 @@ randomtestcard2: randomtestcard2.c dominion.o rngs.o
 
 randomtestadventurer.out: randomtestadventurer
 	./randomtestadventurer >> $@
+	gcov -b randomtestadventurer >> $@
 	gcov -b dominion >> $@
 	@cat dominion.c.gcov >> $@
 
 randomtestcard1.out: randomtestcard1
 	./randomtestcard1 >> $@
+	gcov -b randomtestcard1 >> $@
 	gcov -b dominion >> $@
 	@cat dominion.c.gcov >> $@
 
 randomtestcard2.out: randomtestcard2
 	./randomtestcard2 >> $@
+	gcov -b randomtestcard2 >> $@
 	gcov -b dominion >> $@
 	@cat dominion.c.gcov >> $@
 
