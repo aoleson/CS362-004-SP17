@@ -69,7 +69,7 @@ int main () {
    //Test if the number of actions is incremented by two
    if (testMe.numActions != g.numActions + 2) {
       success_flag = 0;
-      printf("\tFAIL: Number of buys is incorrect after playing village. Expected %d, got %d\n", g.numBuys + 2, testMe.numBuys);
+      printf("\tFAIL: Number of actions is incorrect after playing village. Expected %d, got %d\n", g.numBuys + 2, testMe.numBuys);
    }
    else {
       printf("\tPASS: Correct number of actions after playing village (+2)\n");

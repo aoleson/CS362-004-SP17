@@ -56,13 +56,13 @@ int main () {
    }
 
 
-   //Test if the score changed - it should be the same as before
-   if (scoreFor(0, &testMe) != scoreFor(0, &g)) {
+   //Test if the score changed - should be incremented by 1
+   if (scoreFor(0, &testMe) != scoreFor(0, &g)+1) {
       success_flag = 0;
       printf("\tFAIL: Score after playing council room was not correct. Expected %d, got %d\n", scoreFor(0, &g), scoreFor(0, &testMe));
    }
    else {
-      printf("\tPASS: Correct score after playing council room (no change)\n");
+      printf("\tPASS: Correct score after playing council room (+1)\n");
    }
    
    
