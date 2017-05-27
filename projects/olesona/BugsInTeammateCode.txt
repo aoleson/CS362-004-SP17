@@ -1,0 +1,87 @@
+BugsInTeammateCode.txt
+Tester: Alannah Oleson
+Code author: Mary Jacobsen
+
+
+---------------------------------------------------------
+
+Bug #1
+
+Title: Adventurer card causes segfault whenever it is played
+
+Project: Dominion card game
+Version: v1.0, assignment 2 PR
+
+Reported by: Alannah Oleson
+Email: olesona@oregonstate.edu
+ 
+Created: 5/27/2017
+Updated: N/A
+Resolved: N/A
+ 
+Type: Bug
+Status: Open
+Priority: Major
+Resolution: Not resolved
+Affected Version: v1.0, assignment 2 PR
+File name: dominion.c
+Environment: Flip ENGR server; gcc compiler with options -Wall, -std=c99, -fprofile-arcs, -ftest-coverage, -lm, -g
+ 
+Description:
+Whenever the adventurer card is played in the game, the program segfaults. This makes the game unplayable and is therefore a high priority bug.
+The bug can be reproduced by compiling the cardtest2.c file with the command "make cardtest2" and then running the resulting executable file. The test will segfault.
+This bug was discovered when I ported my tests over to my teammate's project and ran them. The specific test that uncovered it first was my unit test for the Adventurer card (cardtest2.c), but it also appears in my random test for the Adventurer card (randomtestadventurer.c), manifesting itself in the same way. I then used gdb to debug the segfault, tracing the failure back to the Adventurer card's function, and finally going through the function line by line to check the logic.
+
+Code causing Bug:
+On line 656 of dominion.c, the condition of the if statement is incorrect. The line currently reads:
+    if (cardDrawn == copper && cardDrawn == silver && cardDrawn == gold)
+However, this condition will never be true, since a card cannot be copper, silver, AND gold at the same time. 
+This conditional is within a while loop. Since the statement that increments the loop is inside of the conditional (which is never true), the counter never gets incremented. This causes the while loop to run infinitely, taking up memory until it runs out of resources and segfaults. 
+
+Suggested Fix:
+Change line 656 of dominion.c to be:
+    if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+This will allow the condition to be true when one of those cards is drawn, and the counter of the while loop will be incremented correctly.
+
+
+
+---------------------------------------------------------
+
+Bug #2
+
+Title: Smithy card does not draw cards when played
+
+Project: Dominion card game
+Version: v1.0, assignment 2 PR
+
+Reported by: Alannah Oleson
+Email: olesona@oregonstate.edu
+ 
+Created: 5/27/2017
+Updated: N/A
+Resolved: N/A
+ 
+Type: Bug
+Status: Open
+Priority: Major
+Resolution: Not resolved
+Affected Version: v1.0, assignment 2 PR
+File name: dominion.c
+Environment: Flip ENGR server; gcc compiler with options -Wall, -std=c99, -fprofile-arcs, -ftest-coverage, -lm, -g
+ 
+Description: 
+When the smithy card is played in the game, the game state is not modified correctly. The player's hand does not go up by 3 cards and the player's deck does not go down by 3 (i.e. they do not draw three cards).
+This bug can be replicated by compiling the unit test for the smithy card (cardtest1.c) with the command "make carddtest1" and running the resulting executable. This will show that the hand cound and the deck count both fail validation after playing smithy. 
+This bug was discovered during unit testing, but the same bug can be found again in the random tests (compile and run randomtestcard1.c). All of the random tests will fail because the deck and hand counts will always be incorrect.
+
+Code causing Bug:
+On line 675 of dominion.c, there is a for loop condition that reads:
+    for (i = 0; i < 0; i++)
+This is incorrect because the loop will never run. This prevents the player from drawing any cards, which then causes both the deck and hand counts to be incorrect when the card is done being played.
+This was found by first identifying the funciton that controlled the smithy card, then using gbd to trace the variables through the function. The for loop incrementer never reached a value higher than 0, so I then manually inspected the for loop condition to find the bug.
+
+Suggested Fix: 
+Change line 675 of dominion.c to:
+    for (i = 0; i < 3; i++)
+This will allow the loop to run three times, drawing the player three cards.
+
