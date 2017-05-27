@@ -37,7 +37,7 @@ int main () {
 
    cardEffect(adventurer, choice1, choice2, choice3, &testMe, handPos, &bonus);
 
-   if (testMe.handCount[0] != g.handCount[0] + drawnCards - discardedCards) {
+   if (testMe.handCount[0] != g.handCount[0] + drawnCards) {
       success_flag = 0;
       printf("\tFAIL: Hand count after playing adventurer was not correct. Expected %d, got %d\n", g.handCount[0] + drawnCards - discardedCards, testMe.handCount[0]);
    }
